@@ -1,6 +1,7 @@
 // Copyright © 2018 Mark Spicer
 // Made available under the MIT license.
 
+// Cold Brew is a project to control a kyoto cold brew tower via software.
 package main
 
 import (
