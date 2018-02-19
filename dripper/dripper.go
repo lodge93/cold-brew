@@ -33,15 +33,15 @@ const (
 	// milliseconds and seconds.
 	millisecondsPerSec = 1000
 
-	// Used for internal state tracking. The run state represents the pump fully
+	// RUN is used for internal state tracking to represent the pump fully
 	// on, which is useful for blooming, priming, and draining the pump.
 	RUN = "run"
 
-	// Used for internal state tracking. The drip state represents the pump
-	// in the dripping state.
+	// DRIP is used for internal state tracking to represent the pump in the
+	// dripping state.
 	DRIP = "drip"
 
-	// Used for internal state tracking. The off state represents the pump fully
+	// OFF is used for internal state tracking to represent the pump fully
 	// stopped.
 	OFF = "off"
 )
@@ -166,8 +166,8 @@ func (d *Dripper) SetDripsPerMinute(dripsPerMin float64) {
 // GetState returns the internal state of the dripper. This is useful for
 // clients to determine the state of the dripper when reconnecting.
 func (d *Dripper) GetState() string {
-	// TODO: The mutexes in this package need updated so there are two seperate
-	// mutexes. Also, this will need a mutex wrapper once there are two seperate
+	// TODO: The mutexes in this package need updated so there are two separate
+	// mutexes. Also, this will need a mutex wrapper once there are two separate
 	// mutexes.
 	return d.state
 }
@@ -191,7 +191,7 @@ func (d *Dripper) runDrip() {
 	// TODO: this method relies heavily on time.Sleep which is problematic as it
 	// does not lead to a highly accurate drip rate. For example, 60 drips at 60
 	// drips per minute will execute in ~60.5 seconds. While good enough for the
-	// intial iteration, this should be refactored to reflect a more accurate
+	// initial iteration, this should be refactored to reflect a more accurate
 	// drip rate as this will run for several hours and could drift quite a bit.
 	defer d.dripperWG.Done()
 
