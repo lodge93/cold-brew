@@ -4,35 +4,18 @@
 package main
 
 import (
-	"log"
-	"time"
-
-	"github.com/lodge93/cold-brew/dripper"
+	"github.com/gin-gonic/gin"
+	"github.com/lodge93/cold-brew/server"
 )
 
 func main() {
-	d, err := dripper.New()
-	if err != nil {
-		log.Fatal(err)
-	}
+	s := server.New()
+	defer s.Dripper.Off()
 
-	err = d.Bloom(5 * time.Second)
-	if err != nil {
-		log.Fatal(err)
-	}
-
-	err = d.Drip(60.0)
-	if err != nil {
-		log.Fatal(err)
-	}
-
-	time.Sleep(20 * time.Second)
-
-	d.SetDripsPerMinute(120.0)
-	time.Sleep(20 * time.Second)
-
-	err = d.Stop()
-	if err != nil {
-		log.Fatal(err)
-	}
+	r := gin.Default()
+	r.GET("/api/cold-brew/v1/dripper", s.GetDripper)
+	r.POST("/api/cold-brew/v1/dripper/run", s.SetDripperRun)
+	r.POST("/api/cold-brew/v1/dripper/off", s.SetDripperOff)
+	r.POST("/api/cold-brew/v1/dripper/drip", s.SetDripperDrip)
+	r.Run()
 }
