@@ -191,11 +191,6 @@ func (d *Dripper) GetDripsPerMinute() float64 {
 // simply turned on at the lowest speed for some amount of time before being
 // stopped to simulate a single drip.
 func (d *Dripper) runDrip() {
-	// TODO: this method relies heavily on time.Sleep which is problematic as it
-	// does not lead to a highly accurate drip rate. For example, 60 drips at 60
-	// drips per minute will execute in ~60.5 seconds. While good enough for the
-	// initial iteration, this should be refactored to reflect a more accurate
-	// drip rate as this will run for several hours and could drift quite a bit.
 	defer d.dripperWG.Done()
 
 	for {
@@ -203,29 +198,28 @@ func (d *Dripper) runDrip() {
 		case <-d.stopDripper:
 			return
 		default:
-			err := d.on()
-			if err != nil {
-				log.Println(err)
-			}
-
-			time.Sleep(dripDuration * time.Millisecond)
-
-			err = d.stop()
-			if err != nil {
-				log.Println(err)
-			}
-		}
-
-		select {
-		case <-d.stopDripper:
-			return
-		default:
+			go d.drip()
 			d.mutex.Lock()
 			dpm := d.dripsPerMin
 			d.mutex.Unlock()
 			stopDuration := calcStopDuration(dpm)
 			time.Sleep(time.Duration((stopDuration * 1000)) * time.Millisecond)
 		}
+	}
+}
+
+// drip is a low level method to produce one drip from the dripper.
+func (d *Dripper) drip() {
+	err := d.on()
+	if err != nil {
+		log.Println(err)
+	}
+
+	time.Sleep(dripDuration * time.Millisecond)
+
+	err = d.stop()
+	if err != nil {
+		log.Println(err)
 	}
 }
 
