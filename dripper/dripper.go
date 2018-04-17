@@ -104,6 +104,10 @@ func (d *Dripper) Drip(dripsPerMin float64) error {
 		return err
 	}
 
+	// We are setting dripsPerMin before the sanity check in order to update
+	// regardless.
+	d.dripsPerMin = dripsPerMin
+
 	// This is a sanity check to ensure the dripper is not already in the drip
 	// state.
 	if d.state == DRIP {
@@ -111,7 +115,6 @@ func (d *Dripper) Drip(dripsPerMin float64) error {
 	}
 
 	d.state = DRIP
-	d.dripsPerMin = dripsPerMin
 
 	d.dripperWG.Add(1)
 	go d.runDrip()
