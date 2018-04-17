@@ -10,3 +10,21 @@ This was originally a successful hackweek project at my current place of
 employment. I am currently in the process of refactoring code and gathering a
 group of resources (documentation, release pipelines, wiring diagrams, etc) so
 that others can build their own electronic cold brew towers.
+
+## Frontend Setup
+
+``` bash
+# install dependencies
+npm install
+
+# serve with hot reload at localhost:8080
+npm run dev
+
+# build for production with minification
+npm run build
+
+# build for production and view the bundle analyzer report
+npm run build --report
+```
+
+For a detailed explanation on how things work, check out the [guide](http://vuejs-templates.github.io/webpack/) and [docs for vue-loader](http://vuejs.github.io/vue-loader).
