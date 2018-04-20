@@ -30,7 +30,7 @@
       :clipped-left="clipped"
     >
       <v-toolbar-side-icon @click.stop="drawer = !drawer"></v-toolbar-side-icon>
-      <v-toolbar-title><Logo></Logo></v-toolbar-title>
+      <v-toolbar-title><logo></logo></v-toolbar-title>
       <v-spacer></v-spacer>
     </v-toolbar>
     <v-content>
