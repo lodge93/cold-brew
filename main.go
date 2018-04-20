@@ -5,6 +5,7 @@
 package main
 
 import (
+	"github.com/gin-gonic/contrib/static"
 	"github.com/gin-gonic/gin"
 	"github.com/lodge93/cold-brew/server"
 )
@@ -14,6 +15,7 @@ func main() {
 	defer s.Dripper.Off()
 
 	r := gin.Default()
+	r.Use(static.Serve("/", static.LocalFile("./assets/dist", true)))
 	r.GET("/api/cold-brew/v1/dripper", s.GetDripper)
 	r.POST("/api/cold-brew/v1/dripper/run", s.SetDripperRun)
 	r.POST("/api/cold-brew/v1/dripper/off", s.SetDripperOff)
