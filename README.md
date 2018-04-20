@@ -11,20 +11,25 @@ employment. I am currently in the process of refactoring code and gathering a
 group of resources (documentation, release pipelines, wiring diagrams, etc) so
 that others can build their own electronic cold brew towers.
 
-## Frontend Setup
+## Frontend Development
 
 ``` bash
 # install dependencies
 npm install
 
-# serve with hot reload at localhost:8080
+# add your raspberry pi to /etc/hosts (this can also be changed in the webpack config)
+sudo bash -c "echo '<raspberry pi IP address> cold-brew.dev' >> /etc/hosts"
+
+# serve with hot reload at localhost:3000
 npm run dev
-
-# build for production with minification
-npm run build
-
-# build for production and view the bundle analyzer report
-npm run build --report
 ```
 
-For a detailed explanation on how things work, check out the [guide](http://vuejs-templates.github.io/webpack/) and [docs for vue-loader](http://vuejs.github.io/vue-loader).
+## Backend Development
+
+```bash
+# ensure dependencies are properly vendored
+dep ensure
+
+# run server
+go run main.go
+```
