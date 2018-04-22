@@ -18,7 +18,7 @@ type Server struct {
 
 // New creates a new server instance.
 func New() *Server {
-	d, err := dripper.New()
+	d, err := dripper.New(dripper.DefaultConfig())
 	if err != nil {
 		log.Fatal(err)
 	}

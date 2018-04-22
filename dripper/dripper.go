@@ -19,16 +19,6 @@ const (
 	// and seconds.
 	secondsPerMin = 60
 
-	// The slowest speed at which the motor still rotates.
-	dripSpeed = 100
-
-	// The maximum speed the motor can be set to.
-	maxSpeed = 255
-
-	// Time in milliseconds the motor is turned on for in order to produce one
-	// drip at the drip speed.
-	dripDuration = 250
-
 	// Number of milliseconds per second which is used to convert between
 	// milliseconds and seconds.
 	millisecondsPerSec = 1000
@@ -71,10 +61,14 @@ type Dripper struct {
 
 	// State is used internally to track the state of the dripper hardware.
 	state string
+
+	// Config is a dripper configuration object used to set values for the
+	// dripper.
+	Config Config
 }
 
 // New creates a new dripper instance and initializes the motor HAT driver.
-func New() (*Dripper, error) {
+func New(config Config) (*Dripper, error) {
 	r := raspi.NewAdaptor()
 
 	d := Dripper{
@@ -82,6 +76,7 @@ func New() (*Dripper, error) {
 		pump:        i2c.NewAdafruitMotorHatDriver(r),
 		state:       OFF,
 		stopDripper: make(chan bool),
+		Config:      config,
 	}
 
 	// TODO: The start method attempts to initialize both the servo and motor
@@ -99,7 +94,7 @@ func New() (*Dripper, error) {
 
 // Drip starts the dripper at the desired drip rate.
 func (d *Dripper) Drip(dripsPerMin float64) error {
-	err := d.setSpeed(dripSpeed)
+	err := d.setSpeed(d.Config.DripSpeed)
 	if err != nil {
 		return err
 	}
@@ -133,7 +128,7 @@ func (d *Dripper) Run() error {
 		d.Off()
 	}
 
-	err := d.setSpeed(maxSpeed)
+	err := d.setSpeed(d.Config.RunSpeed)
 	if err != nil {
 		return err
 	}
@@ -201,8 +196,9 @@ func (d *Dripper) runDrip() {
 			go d.drip()
 			d.mutex.Lock()
 			dpm := d.dripsPerMin
+			dripDuration := d.Config.DripDuration
 			d.mutex.Unlock()
-			stopDuration := calcStopDuration(dpm)
+			stopDuration := calcStopDuration(dpm, dripDuration)
 			time.Sleep(time.Duration((stopDuration * 1000)) * time.Millisecond)
 		}
 	}
@@ -215,7 +211,7 @@ func (d *Dripper) drip() {
 		log.Println(err)
 	}
 
-	time.Sleep(dripDuration * time.Millisecond)
+	time.Sleep(time.Duration(d.Config.DripDuration) * time.Millisecond)
 
 	err = d.stop()
 	if err != nil {
@@ -240,12 +236,12 @@ func (d *Dripper) stop() error {
 
 // calcStopDuration calculates the amount of time between drips is necessary
 // to achieve the desired drip rate.
-func calcStopDuration(dripsPerMin float64) float64 {
+func calcStopDuration(dripsPerMin float64, dripDuration int64) float64 {
 	if dripsPerMin > 240 {
 		dripsPerMin = 240
 	}
 
 	secondsPerDrip := secondsPerMin / dripsPerMin
-	stop := secondsPerDrip - (dripDuration / millisecondsPerSec)
+	stop := secondsPerDrip - (float64(dripDuration) / millisecondsPerSec)
 	return stop
 }
