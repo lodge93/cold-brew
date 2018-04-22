@@ -1,0 +1,13 @@
+[Unit]
+Description=Cold Brew Dripper
+After=network.target
+
+[Service]
+Type=simple
+User=pi
+WorkingDirectory=/home/pi/cold-brew
+ExecStart=/home/pi/cold-brew/cold-brew
+Restart=on-failure
+
+[Install]
+WantedBy=multi-user.target

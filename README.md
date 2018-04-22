@@ -33,3 +33,16 @@ dep ensure
 # run server
 go run main.go
 ```
+
+## Deploy Development Build
+
+```bash
+# deploy using cold-brew.dev in /etc/hosts
+./deploy/development.sh
+
+# deploy skipping the frontend assets
+./deploy/development.sh -s
+
+# deploy setting custom remote host
+./deploy/development.sh -h <raspberry pi IP address>
+```
