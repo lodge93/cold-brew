@@ -20,13 +20,13 @@ const (
 type Config struct {
 	// DripDuration is the time in milliseconds the motor is turned on for in
 	// order to produce one drip at the drip speed.
-	DripDuration int64
+	DripDuration int64 `json:"dripDuration" binding:"required"`
 
 	// DripSpeed is the slowest speed at which the motor still rotates.
-	DripSpeed int32
+	DripSpeed int32 `json:"dripSpeed" binding:"required"`
 
 	// RunSpeed is the fastest speed the motor will rotate.
-	RunSpeed int32
+	RunSpeed int32 `json:"runSpeed" binding:"required"`
 }
 
 // DefaultConfig config returns a configuration object with sane defaults.
