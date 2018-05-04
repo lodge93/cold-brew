@@ -40,7 +40,7 @@ const (
 // coffee dripper.
 type Dripper struct {
 	// The motor driver for the peristaltic pump.
-	pump *i2c.AdafruitMotorHatDriver
+	pump MotorController
 
 	// The motor number on the Adafruit Motor HAT indexed on zero.
 	motorNum int
@@ -65,6 +65,13 @@ type Dripper struct {
 	// Config is a dripper configuration object used to set values for the
 	// dripper.
 	Config Config
+}
+
+// MotorController is an interface to allow the pump to be mocked out in tests.
+type MotorController interface {
+	Start() error
+	RunDCMotor(int, i2c.AdafruitDirection) error
+	SetDCMotorSpeed(int, int32) error
 }
 
 // New creates a new dripper instance and initializes the motor HAT driver.
