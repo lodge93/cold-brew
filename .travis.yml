@@ -7,4 +7,5 @@ install:
   - dep ensure
 
 script:
+  - go test ./...
   - GOOS=linux GOARCH=arm go build

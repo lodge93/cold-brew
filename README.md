@@ -33,3 +33,24 @@ dep ensure
 # run server
 go run main.go
 ```
+
+The mocks for unit testing were generated using 
+[mock](https://github.com/golang/mock):
+```bash
+# generate mocks
+mockgen -destination dripper/mock_dripper/mock_dripper.go github.com/lodge93/cold-brew/dripper MotorController
+```
+
+
+## Deploy Development Build
+
+```bash
+# deploy using cold-brew.dev in /etc/hosts
+./deploy/development.sh
+
+# deploy skipping the frontend assets
+./deploy/development.sh -s
+
+# deploy setting custom remote host
+./deploy/development.sh -h <raspberry pi IP address>
+```

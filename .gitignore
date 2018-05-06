@@ -1,4 +1,5 @@
 cold-brew
+build/
 
 # Mac files
 .DS_Store

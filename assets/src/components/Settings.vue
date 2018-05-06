@@ -1,18 +1,18 @@
 <template>
   <v-container fluid>
       <v-layout row wrap>
-        <manual-controls></manual-controls>
+        <dripper-settings></dripper-settings>
       </v-layout>
   </v-container>
 </template>
 
 <script>
-import ManualControls from './ManualControls'
+import DripperSettings from './DripperSettings'
 
 export default {
   name: 'Home',
   components: {
-    ManualControls
+    DripperSettings
   }
 }
 </script>
