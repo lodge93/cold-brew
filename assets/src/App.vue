@@ -8,12 +8,14 @@
       enable-resize-watcher
       fixed
       app
+      temporary="true"
     >
       <v-list>
         <v-list-tile
           value="true"
           v-for="(item, i) in items"
           :key="i"
+          :to="item.route"
         >
           <v-list-tile-action>
             <v-icon v-html="item.icon"></v-icon>
@@ -48,10 +50,18 @@ export default {
       clipped: true,
       drawer: false,
       fixed: false,
-      items: [{
-        icon: 'home',
-        title: 'Home'
-      }],
+      items: [
+        {
+          icon: 'home',
+          title: 'Home',
+          route: '/'
+        },
+        {
+          icon: 'build',
+          title: 'Settings',
+          route: '/settings'
+        }
+      ],
       miniVariant: false
     }
   },
