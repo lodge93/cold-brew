@@ -14,17 +14,28 @@ import (
 // Server is a base object which provide HTTP requests access to the dripper.
 type Server struct {
 	Dripper *dripper.Dripper
+	Config  *Config
 }
 
 // New creates a new server instance.
 func New() *Server {
-	d, err := dripper.New(dripper.DefaultConfig())
+	config, err := NewConfig()
 	if err != nil {
 		log.Fatal(err)
 	}
 
+	d, err := dripper.New(dripper.DefaultConfig())
+	if err != nil {
+		if config.Environment == EnvDevelopment {
+			log.Println(err)
+		} else {
+			log.Fatal(err)
+		}
+	}
+
 	s := Server{
 		Dripper: d,
+		Config:  config,
 	}
 
 	return &s

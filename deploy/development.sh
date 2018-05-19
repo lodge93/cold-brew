@@ -33,6 +33,9 @@ ssh pi@${REMOTE_HOST} "
     sudo systemctl daemon-reload
 "
 
+echo "Adding remote configuration file"
+scp deploy/config.yml pi@${REMOTE_HOST}:${DEPLOY_DIR}
+
 echo "Stopping remote application"
 ssh pi@${REMOTE_HOST} "
     sudo systemctl stop cold-brew
