@@ -17,6 +17,7 @@ const (
 )
 
 // Config is a configuration object used to configure dripper settings.
+// TODO: this is accessed concurrently, but has no mutex.
 type Config struct {
 	// DripDuration is the time in milliseconds the motor is turned on for in
 	// order to produce one drip at the drip speed.

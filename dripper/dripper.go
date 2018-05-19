@@ -55,12 +55,16 @@ type Dripper struct {
 	// The drips per minute to set the dripper to.
 	dripsPerMin float64
 
-	// A mutex used to lock the dipper object when updating the drips per minute
-	// outside the drip goroutine.
-	mutex sync.Mutex
+	// dripsPerMinMutex is used to update the dripsPerMinute across multiple
+	// goroutines.
+	dripsPerMinMutex sync.Mutex
 
 	// State is used internally to track the state of the dripper hardware.
 	state string
+
+	// stateMutex is used to modify the dripper state across multiple
+	// goroutines.
+	stateMutex sync.Mutex
 
 	// Config is a dripper configuration object used to set values for the
 	// dripper.
@@ -108,20 +112,27 @@ func (d *Dripper) Drip(dripsPerMin float64) error {
 
 	// We are setting dripsPerMin before the sanity check in order to update
 	// regardless.
-	d.dripsPerMin = dripsPerMin
+	d.SetDripsPerMinute(dripsPerMin)
 
 	// This is a sanity check to ensure the dripper is not already in the drip
 	// state.
-	if d.state == DRIP {
+	if d.GetState() == DRIP {
 		return nil
 	}
 
-	d.state = DRIP
+	d.setState(DRIP)
 
 	d.dripperWG.Add(1)
 	go d.runDrip()
 
 	return nil
+}
+
+// setState is used as a setter to set the dripper state concurrently.
+func (d *Dripper) setState(state string) {
+	d.stateMutex.Lock()
+	d.state = state
+	d.stateMutex.Unlock()
 }
 
 // Run turns on the dripper at the maximum pump speed. This is useful for
@@ -131,7 +142,7 @@ func (d *Dripper) Run() error {
 	// This is a sanity check to ensure the drip goroutine is stopped before
 	// trying to control the pump. This prevents the weird state where the pump
 	// is on the maximum speed, but is still pulsing from the drip goroutine.
-	if d.state == DRIP {
+	if d.GetState() == DRIP {
 		d.Off()
 	}
 
@@ -140,7 +151,7 @@ func (d *Dripper) Run() error {
 		return err
 	}
 
-	d.state = RUN
+	d.setState(RUN)
 
 	err = d.on()
 	if err != nil {
@@ -152,36 +163,38 @@ func (d *Dripper) Run() error {
 
 // Off ensures the dripper is completely stopped.
 func (d *Dripper) Off() error {
-	if d.state == DRIP {
+	if d.GetState() == DRIP {
 		d.stopDripper <- true
 		d.dripperWG.Wait()
 	}
-	d.state = OFF
+
+	d.setState(OFF)
 
 	return d.stop()
 }
 
 // SetDripsPerMinute will update the dripper with the desired drip rate.
 func (d *Dripper) SetDripsPerMinute(dripsPerMin float64) {
-	d.mutex.Lock()
+	d.dripsPerMinMutex.Lock()
 	d.dripsPerMin = dripsPerMin
-	d.mutex.Unlock()
+	d.dripsPerMinMutex.Unlock()
 }
 
 // GetState returns the internal state of the dripper. This is useful for
 // clients to determine the state of the dripper when reconnecting.
 func (d *Dripper) GetState() string {
-	// TODO: The mutexes in this package need updated so there are two separate
-	// mutexes. Also, this will need a mutex wrapper once there are two separate
-	// mutexes.
-	return d.state
+	d.stateMutex.Lock()
+	state := d.state
+	d.stateMutex.Unlock()
+
+	return state
 }
 
 // GetDripsPerMinute will return the current drip rate from the dripper.
 func (d *Dripper) GetDripsPerMinute() float64 {
-	d.mutex.Lock()
+	d.dripsPerMinMutex.Lock()
 	dpm := d.dripsPerMin
-	d.mutex.Unlock()
+	d.dripsPerMinMutex.Unlock()
 
 	return dpm
 }
@@ -201,10 +214,8 @@ func (d *Dripper) runDrip() {
 			return
 		default:
 			go d.drip()
-			d.mutex.Lock()
-			dpm := d.dripsPerMin
+			dpm := d.GetDripsPerMinute()
 			dripDuration := d.Config.DripDuration
-			d.mutex.Unlock()
 			stopDuration := calcStopDuration(dpm, dripDuration)
 			time.Sleep(time.Duration((stopDuration * 1000)) * time.Millisecond)
 		}
