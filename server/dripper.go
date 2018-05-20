@@ -6,8 +6,6 @@ package server
 import (
 	"net/http"
 
-	"github.com/lodge93/cold-brew/dripper"
-
 	"github.com/gin-gonic/gin"
 	"github.com/lodge93/cold-brew/api"
 )
@@ -72,30 +70,4 @@ func (s *Server) SetDripperDrip(c *gin.Context) {
 		State:          s.Dripper.GetState(),
 		DripsPerMinute: s.Dripper.GetDripsPerMinute(),
 	})
-}
-
-// GetDripperConfig returns the current confiuration of the dripper.
-func (s *Server) GetDripperConfig(c *gin.Context) {
-	c.JSON(http.StatusOK, s.Dripper.Config)
-}
-
-// SetDripperConfig reinitializes the dripper with the supplied config.
-func (s *Server) SetDripperConfig(c *gin.Context) {
-	var config dripper.Config
-	err := c.BindJSON(&config)
-	if err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": "the request submitted either was not JSON or did not contain the proper fields"})
-		return
-	}
-
-	s.Dripper.Off()
-
-	d, err := dripper.New(config)
-	if err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{"error": "the dripper could not be reinitialized"})
-		return
-	}
-
-	s.Dripper = d
-	c.JSON(http.StatusOK, s.Dripper.Config)
 }

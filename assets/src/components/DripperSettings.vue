@@ -13,7 +13,7 @@
         <v-slider min="0" max="120" v-model="dripSpeed" step="1"></v-slider>
         <p>Run Speed - {{ runSpeed }}</p>
         <v-slider min="0" max="255" v-model="runSpeed" step="1"></v-slider>
-        <v-btn color="primary" v-on:click.native="setDripperConfig">Submit</v-btn>
+        <v-btn color="primary" v-on:click.native="setDripperSettings">Submit</v-btn>
       </v-card-text>
     </v-card>
   </v-flex>
@@ -30,12 +30,12 @@ export default {
   },
 
   beforeMount () {
-    this.getDripperConfig()
+    this.getDripperSettings()
   },
 
   methods: {
-    getDripperConfig () {
-      this.$http.get('/api/cold-brew/v1/dripper/config')
+    getDripperSettings () {
+      this.$http.get('/api/cold-brew/v1/dripper/settings')
         .then(response => {
           this.dripDuration = response.body.dripDuration
           this.dripSpeed = response.body.dripSpeed
@@ -45,8 +45,8 @@ export default {
         })
     },
 
-    setDripperConfig () {
-      this.$http.post('/api/cold-brew/v1/dripper/config', {
+    setDripperSettings () {
+      this.$http.post('/api/cold-brew/v1/dripper/settings', {
         dripDuration: this.dripDuration,
         dripSpeed: this.dripSpeed,
         runSpeed: this.runSpeed

@@ -66,9 +66,9 @@ type Dripper struct {
 	// goroutines.
 	stateMutex sync.Mutex
 
-	// Config is a dripper configuration object used to set values for the
+	// Settings is a dripper configuration object used to set values for the
 	// dripper.
-	Config Config
+	Settings Settings
 }
 
 // MotorController is an interface to allow the pump to be mocked out in tests.
@@ -79,7 +79,7 @@ type MotorController interface {
 }
 
 // New creates a new dripper instance and initializes the motor HAT driver.
-func New(config Config) (*Dripper, error) {
+func New(config Settings) (*Dripper, error) {
 	r := raspi.NewAdaptor()
 
 	d := Dripper{
@@ -87,7 +87,7 @@ func New(config Config) (*Dripper, error) {
 		pump:        i2c.NewAdafruitMotorHatDriver(r),
 		state:       OFF,
 		stopDripper: make(chan bool),
-		Config:      config,
+		Settings:    config,
 	}
 
 	// TODO: The start method attempts to initialize both the servo and motor
@@ -105,7 +105,7 @@ func New(config Config) (*Dripper, error) {
 
 // Drip starts the dripper at the desired drip rate.
 func (d *Dripper) Drip(dripsPerMin float64) error {
-	err := d.setSpeed(d.Config.DripSpeed)
+	err := d.setSpeed(d.Settings.DripSpeed)
 	if err != nil {
 		return err
 	}
@@ -146,7 +146,7 @@ func (d *Dripper) Run() error {
 		d.Off()
 	}
 
-	err := d.setSpeed(d.Config.RunSpeed)
+	err := d.setSpeed(d.Settings.RunSpeed)
 	if err != nil {
 		return err
 	}
@@ -215,7 +215,7 @@ func (d *Dripper) runDrip() {
 		default:
 			go d.drip()
 			dpm := d.GetDripsPerMinute()
-			dripDuration := d.Config.DripDuration
+			dripDuration := d.Settings.DripDuration
 			stopDuration := calcStopDuration(dpm, dripDuration)
 			time.Sleep(time.Duration((stopDuration * 1000)) * time.Millisecond)
 		}
@@ -229,7 +229,7 @@ func (d *Dripper) drip() {
 		log.Println(err)
 	}
 
-	time.Sleep(time.Duration(d.Config.DripDuration) * time.Millisecond)
+	time.Sleep(time.Duration(d.Settings.DripDuration) * time.Millisecond)
 
 	err = d.stop()
 	if err != nil {

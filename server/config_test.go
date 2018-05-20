@@ -13,7 +13,7 @@ func TestNewConfigReadsFromTestData(t *testing.T) {
 		t.Error("could not load configuration file:", err)
 	}
 
-	if config.DBFile != "/foo/bar" {
+	if config.DatabaseDir != "/foo/bar" {
 		t.Error("incorrect database file path was loaded from config file")
 	}
 

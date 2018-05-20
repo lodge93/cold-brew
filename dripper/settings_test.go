@@ -6,18 +6,18 @@ import (
 	"testing"
 )
 
-func TestDefaultConfigReturnsDefaultValues(t *testing.T) {
-	config := DefaultConfig()
+func TestDefaultSettingsReturnsDefaultValues(t *testing.T) {
+	settings := DefaultSettings()
 
-	if config.DripSpeed != DefaultDripSpeed {
+	if settings.DripSpeed != DefaultDripSpeed {
 		t.Error("configured drip speed does not match default")
 	}
 
-	if config.RunSpeed != DefaultRunSpeed {
+	if settings.RunSpeed != DefaultRunSpeed {
 		t.Error("configured run speed does not match default")
 	}
 
-	if config.DripDuration != DefaultDripDuration {
+	if settings.DripDuration != DefaultDripDuration {
 		t.Error("configured duration does not match default")
 	}
 }
