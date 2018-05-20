@@ -21,13 +21,13 @@ func setup(t *testing.T) testDripper {
 	mockCtrl := gomock.NewController(t)
 	mockMotorController := mock_dripper.NewMockMotorController(mockCtrl)
 
-	config := DefaultConfig()
+	config := DefaultSettings()
 	d := Dripper{
 		motorNum:    2,
 		pump:        mockMotorController,
 		state:       OFF,
 		stopDripper: make(chan bool, 1),
-		Config:      config,
+		Settings:    config,
 	}
 
 	return testDripper{
@@ -77,7 +77,7 @@ func (d *testDripper) givenStateIsDrip() {
 }
 
 func (d *testDripper) givenMotorIsSetToDrip() {
-	d.mockMotorController.EXPECT().SetDCMotorSpeed(d.dripper.motorNum, d.dripper.Config.DripSpeed)
+	d.mockMotorController.EXPECT().SetDCMotorSpeed(d.dripper.motorNum, d.dripper.Settings.DripSpeed)
 }
 
 func (d *testDripper) whenDrip(dripsPerMinute float64) {

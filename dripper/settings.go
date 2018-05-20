@@ -16,9 +16,9 @@ const (
 	DefaultRunSpeed = 255
 )
 
-// Config is a configuration object used to configure dripper settings.
+// Settings is a configuration object used to configure dripper settings.
 // TODO: this is accessed concurrently, but has no mutex.
-type Config struct {
+type Settings struct {
 	// DripDuration is the time in milliseconds the motor is turned on for in
 	// order to produce one drip at the drip speed.
 	DripDuration int64 `json:"dripDuration" binding:"required"`
@@ -30,9 +30,9 @@ type Config struct {
 	RunSpeed int32 `json:"runSpeed" binding:"required"`
 }
 
-// DefaultConfig config returns a configuration object with sane defaults.
-func DefaultConfig() Config {
-	return Config{
+// DefaultSettings config returns a configuration object with sane defaults.
+func DefaultSettings() Settings {
+	return Settings{
 		DripDuration: DefaultDripDuration,
 		DripSpeed:    DefaultDripSpeed,
 		RunSpeed:     DefaultRunSpeed,

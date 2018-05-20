@@ -74,14 +74,14 @@ func (s *Server) SetDripperDrip(c *gin.Context) {
 	})
 }
 
-// GetDripperConfig returns the current confiuration of the dripper.
-func (s *Server) GetDripperConfig(c *gin.Context) {
-	c.JSON(http.StatusOK, s.Dripper.Config)
+// GetDripperSettings returns the current configuration of the dripper.
+func (s *Server) GetDripperSettings(c *gin.Context) {
+	c.JSON(http.StatusOK, s.Dripper.Settings)
 }
 
-// SetDripperConfig reinitializes the dripper with the supplied config.
-func (s *Server) SetDripperConfig(c *gin.Context) {
-	var config dripper.Config
+// SetDripperSettings reinitializes the dripper with the supplied config.
+func (s *Server) SetDripperSettings(c *gin.Context) {
+	var config dripper.Settings
 	err := c.BindJSON(&config)
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "the request submitted either was not JSON or did not contain the proper fields"})
@@ -97,5 +97,5 @@ func (s *Server) SetDripperConfig(c *gin.Context) {
 	}
 
 	s.Dripper = d
-	c.JSON(http.StatusOK, s.Dripper.Config)
+	c.JSON(http.StatusOK, s.Dripper.Settings)
 }

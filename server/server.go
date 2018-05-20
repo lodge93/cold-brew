@@ -27,7 +27,7 @@ func New() *Server {
 		log.Fatal(err)
 	}
 
-	d, err := dripper.New(dripper.DefaultConfig())
+	d, err := dripper.New(dripper.DefaultSettings())
 	if err != nil {
 		if config.Environment == EnvDevelopment {
 			log.Println(err)
