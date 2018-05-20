@@ -27,7 +27,19 @@ func New() *Server {
 		log.Fatal(err)
 	}
 
-	d, err := dripper.New(dripper.DefaultSettings())
+	db, err := NewDatabase(config.DatabaseDir)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	s := Server{
+		Config: config,
+		DB:     db,
+	}
+
+	settings := s.readSettingsOrDefault()
+
+	d, err := dripper.New(settings)
 	if err != nil {
 		if config.Environment == EnvDevelopment {
 			log.Println(err)
@@ -36,16 +48,7 @@ func New() *Server {
 		}
 	}
 
-	db, err := NewDatabase(config.DatabaseDir)
-	if err != nil {
-		log.Fatal(err)
-	}
-
-	s := Server{
-		Dripper: d,
-		Config:  config,
-		DB:      db,
-	}
+	s.Dripper = d
 
 	return &s
 }
