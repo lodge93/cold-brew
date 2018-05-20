@@ -8,11 +8,11 @@
       enable-resize-watcher
       fixed
       app
-      temporary="true"
+      :temporary=true
     >
       <v-list>
         <v-list-tile
-          value="true"
+          value=true
           v-for="(item, i) in items"
           :key="i"
           :to="item.route"

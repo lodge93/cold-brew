@@ -14,11 +14,11 @@ while getopts 'sd:h:' flag; do
 done
 
 echo "Building local project"
-GOOS=linux GOARCH=arm go build -o build/cold-brew
+GOOS=linux GOARCH=arm go build -o out/cold-brew
 if [ "$SKIP_FRONTEND_ARTIFACTS" = false ]
 then
     npm run build
-    tar -zcvf build/frontend.tar.gz assets/dist
+    tar -zcvf out/frontend.tar.gz assets/dist
 fi
 
 echo "Creating remote deploy directory"
@@ -42,10 +42,10 @@ ssh pi@${REMOTE_HOST} "
 "
 
 echo "Copying built artifacts to remote host"
-scp build/cold-brew pi@${REMOTE_HOST}:${DEPLOY_DIR}
+scp out/cold-brew pi@${REMOTE_HOST}:${DEPLOY_DIR}
 if [ "$SKIP_FRONTEND_ARTIFACTS" = false ]
 then
-    scp build/frontend.tar.gz pi@${REMOTE_HOST}:${DEPLOY_DIR}
+    scp out/frontend.tar.gz pi@${REMOTE_HOST}:${DEPLOY_DIR}
     ssh pi@${REMOTE_HOST} "
         cd ${DEPLOY_DIR}
         tar -xvzf ${DEPLOY_DIR}/frontend.tar.gz
