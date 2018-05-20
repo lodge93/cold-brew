@@ -1,5 +1,6 @@
 cold-brew
 out/
+db/
 
 # Mac files
 .DS_Store

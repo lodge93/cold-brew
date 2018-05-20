@@ -1,3 +1,3 @@
 ---
 environment: "testing"
-databaseFile: "/foo/bar"
+databaseDir: "/foo/bar"

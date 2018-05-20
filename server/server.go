@@ -8,6 +8,8 @@ package server
 import (
 	"log"
 
+	"github.com/nanobox-io/golang-scribble"
+
 	"github.com/lodge93/cold-brew/dripper"
 )
 
@@ -15,6 +17,7 @@ import (
 type Server struct {
 	Dripper *dripper.Dripper
 	Config  *Config
+	DB      *scribble.Driver
 }
 
 // New creates a new server instance.
@@ -33,9 +36,15 @@ func New() *Server {
 		}
 	}
 
+	db, err := NewDatabase(config.DatabaseDir)
+	if err != nil {
+		log.Fatal(err)
+	}
+
 	s := Server{
 		Dripper: d,
 		Config:  config,
+		DB:      db,
 	}
 
 	return &s

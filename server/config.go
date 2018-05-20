@@ -30,8 +30,8 @@ type Config struct {
 	// application is being run in.
 	Environment string
 
-	// DBFile is the aboslute path of the SQLite database.
-	DBFile string
+	// DatabaseDir is the absolute path of the SQLite database.
+	DatabaseDir string
 }
 
 // NewConfig returns a new configuration struct populated from a config file.
@@ -44,10 +44,10 @@ func NewConfig() (*Config, error) {
 		return nil, err
 	}
 
-	if !viper.IsSet("databaseFile") {
-		return nil, errors.New("databaseFile key is not set in the configuration file")
+	if !viper.IsSet("databaseDir") {
+		return nil, errors.New("databaseDir key is not set in the configuration file")
 	}
-	dbFile := viper.GetString("databaseFile")
+	dbFile := viper.GetString("databaseDir")
 
 	if !viper.IsSet("environment") {
 		return nil, errors.New("environment key is not set in the configuration file")
@@ -59,7 +59,7 @@ func NewConfig() (*Config, error) {
 
 	return &Config{
 		Environment: env,
-		DBFile:      dbFile,
+		DatabaseDir: dbFile,
 	}, nil
 }
 
