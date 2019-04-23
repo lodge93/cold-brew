@@ -41,9 +41,6 @@ electron .
 ## Backend Development
 
 ```bash
-# ensure dependencies are properly vendored
-dep ensure
-
 # run server
 go run main.go
 ```

@@ -1,0 +1,35 @@
+module github.com/lodge93/cold-brew
+
+require (
+	github.com/fsnotify/fsnotify v1.4.7
+	github.com/gin-contrib/sse v0.0.0-20170109093832-22d885f9ecc7
+	github.com/gin-gonic/contrib v0.0.0-20180320084256-9b830a15f6ab
+	github.com/gin-gonic/gin v0.0.0-20170702092826-d459835d2b07
+	github.com/golang/mock v1.1.1
+	github.com/golang/protobuf v1.0.0
+	github.com/hashicorp/errwrap v0.0.0-20141028054710-7554cd9344ce
+	github.com/hashicorp/go-multierror v0.0.0-20171204182908-b7773ae21874
+	github.com/hashicorp/hcl v0.0.0-20180404174102-ef8a98b0bbce
+	github.com/jcelliott/lumber v0.0.0-20160324203708-dd349441af25
+	github.com/magiconair/properties v1.7.6
+	github.com/mattn/go-isatty v0.0.3
+	github.com/mitchellh/mapstructure v0.0.0-20180220230111-00c29f56e238
+	github.com/nanobox-io/golang-scribble v0.0.0-20171026142921-ced58d671850
+	github.com/pelletier/go-toml v1.1.0
+	github.com/pkg/errors v0.8.0
+	github.com/sigurn/crc8 v0.0.0-20160107002456-e55481d6f45c
+	github.com/sigurn/utils v0.0.0-20151230205143-f19e41f79f8f
+	github.com/spf13/afero v1.1.0
+	github.com/spf13/cast v1.2.0
+	github.com/spf13/jwalterweatherman v0.0.0-20180109140146-7c0cea34c8ec
+	github.com/spf13/pflag v1.0.1
+	github.com/spf13/viper v1.0.2
+	github.com/ugorji/go v0.0.0-20180112141927-9831f2c3ac10
+	gobot.io/x/gobot v1.9.0
+	golang.org/x/exp v0.0.0-20180214205018-83bc9a11ae1a
+	golang.org/x/net v0.0.0-20180502164142-640f4622ab69
+	golang.org/x/sys v0.0.0-20180202135801-37707fdb30a5
+	golang.org/x/text v0.3.0
+	gopkg.in/go-playground/validator.v8 v8.18.2
+	gopkg.in/yaml.v2 v2.0.0
+)
