@@ -7,7 +7,7 @@ import (
 	"testing"
 
 	"github.com/golang/mock/gomock"
-	"github.com/lodge93/cold-brew/dripper/mock_dripper"
+	"github.com/lodge93/cold-brew/pkg/dripper/mock_dripper"
 )
 
 type testDripper struct {

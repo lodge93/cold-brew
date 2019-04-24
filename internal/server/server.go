@@ -10,7 +10,7 @@ import (
 
 	"github.com/nanobox-io/golang-scribble"
 
-	"github.com/lodge93/cold-brew/dripper"
+	"github.com/lodge93/cold-brew/pkg/dripper"
 )
 
 // Server is a base object which provide HTTP requests access to the dripper.

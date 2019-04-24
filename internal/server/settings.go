@@ -7,7 +7,7 @@ import (
 	"net/http"
 
 	"github.com/gin-gonic/gin"
-	"github.com/lodge93/cold-brew/dripper"
+	"github.com/lodge93/cold-brew/pkg/dripper"
 )
 
 const (
