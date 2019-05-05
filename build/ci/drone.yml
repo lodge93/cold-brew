@@ -1,5 +1,5 @@
 kind: pipeline
-name: default
+name: backend
 
 platform:
   os: linux
@@ -42,7 +42,41 @@ steps:
         from_secret: google_auth_key
     settings:
       source: build/out/cold-brew-server_0.0.1-${DRONE_BUILD_NUMBER}_armhf.deb
-      target: project-build-storage/cold-brew/cold-brew-server_0.0.1-${DRONE_BUILD_NUMBER}_armhf.deb
+      target: project-build-storage/cold-brew/snapshots/${DRONE_BUILD_NUMBER}/backend/cold-brew-server_0.0.1-${DRONE_BUILD_NUMBER}_armhf.deb
+      acl:
+        - allUsers:READER
+      cache_control: public,max-age=3600
+
+---
+kind: pipeline
+name: frontend
+
+platform:
+  os: linux
+  arch: amd64
+
+steps:
+  - name: build
+    image: node:11.14.0
+    commands:
+      - npm install
+      - npm run build
+
+  - name: zip
+    image: alpine
+    commands:
+      - apk add zip
+      - mkdir -p build/out
+      - zip -r build/out/frontend-${DRONE_BUILD_NUMBER}.zip assets/dist
+
+  - name: upload to gcs
+    image: plugins/gcs
+    environment:
+      GOOGLE_CREDENTIALS:
+        from_secret: google_auth_key
+    settings:
+      source: build/out/frontend-${DRONE_BUILD_NUMBER}.zip
+      target: project-build-storage/cold-brew/snapshots/${DRONE_BUILD_NUMBER}/frontend/frontend-${DRONE_BUILD_NUMBER}.zip
       acl:
         - allUsers:READER
       cache_control: public,max-age=3600
