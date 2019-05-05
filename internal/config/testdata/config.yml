@@ -1,0 +1,8 @@
+---
+application:
+  grpc: ":50051"
+  rest: ":8080"
+  admin: ":8081"
+environment: development
+logging:
+  level: warning
