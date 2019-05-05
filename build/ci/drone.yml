@@ -10,6 +10,7 @@ steps:
     image: golang:1.12
     environment:
       GO111MODULE: on
+      GOPROXY: https://proxy.golang.org
     commands:
       - make test-full
 
@@ -17,6 +18,7 @@ steps:
     image: golang:1.12
     environment:
       GO111MODULE: on
+      GOPROXY: https://proxy.golang.org
     commands:
       - make build
 
@@ -29,9 +31,9 @@ steps:
       input_type: dir
       output_type: deb
       architecture: armhf
-      package: build/out/cold-brew_0.0.1-${DRONE_BUILD_NUMBER}_armhf.deb
-      deb_systemd: build/package/systemd/cold-brew.service
-      command_arguments: build/out/linux/arm/cold-brew=/usr/local/bin/
+      package: build/out/cold-brew-server_0.0.1-${DRONE_BUILD_NUMBER}_armhf.deb
+      deb_systemd: build/package/systemd/cold-brew-server.service
+      command_arguments: build/out/linux/arm/cold-brew-server=/usr/local/bin/
 
   - name: upload to gcs
     image: plugins/gcs
@@ -39,8 +41,8 @@ steps:
       GOOGLE_CREDENTIALS:
         from_secret: google_auth_key
     settings:
-      source: build/out/cold-brew_0.0.1-${DRONE_BUILD_NUMBER}_armhf.deb
-      target: open-keyless-build-storage/snapshots/cold-brew_0.0.1-${DRONE_BUILD_NUMBER}_armhf.deb
+      source: build/out/cold-brew-server_0.0.1-${DRONE_BUILD_NUMBER}_armhf.deb
+      target: project-build-storage/cold-brew/cold-brew-server_0.0.1-${DRONE_BUILD_NUMBER}_armhf.deb
       acl:
         - allUsers:READER
       cache_control: public,max-age=3600
