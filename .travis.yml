@@ -1,7 +1,0 @@
-language: go
-go: 
-  - 1.9.4
-
-script:
-  - go test ./...
-  - GOOS=linux GOARCH=arm go build

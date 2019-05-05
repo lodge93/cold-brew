@@ -1,5 +1,5 @@
 # cold-brew
-[![Build Status](https://travis-ci.org/lodge93/cold-brew.svg?branch=master)](https://travis-ci.org/lodge93/cold-brew)
+[![Build Status](https://cloud.drone.io/api/badges/lodge93/cold-brew/status.svg)](https://cloud.drone.io/lodge93/cold-brew)
 [![Go Report Card](https://goreportcard.com/badge/github.com/lodge93/cold-brew)](https://goreportcard.com/report/github.com/lodge93/cold-brew)
 [![GoDoc](https://godoc.org/github.com/lodge93/cold-brew?status.svg)](https://godoc.org/github.com/lodge93/cold-brew)
 
@@ -41,9 +41,6 @@ electron .
 ## Backend Development
 
 ```bash
-# ensure dependencies are properly vendored
-dep ensure
-
 # run server
 go run main.go
 ```

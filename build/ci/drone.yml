@@ -1,0 +1,46 @@
+kind: pipeline
+name: default
+
+platform:
+  os: linux
+  arch: amd64
+
+steps:
+  - name: test
+    image: golang:1.12
+    environment:
+      GO111MODULE: on
+    commands:
+      - make test-full
+
+  - name: build binary
+    image: golang:1.12
+    environment:
+      GO111MODULE: on
+    commands:
+      - make build
+
+  - name: build debian package
+    image: lodge93/drone-fpm
+    pull: always
+    settings:
+      name: cold-brew
+      version: 0.0.1-${DRONE_BUILD_NUMBER}
+      input_type: dir
+      output_type: deb
+      architecture: armhf
+      package: build/out/cold-brew_0.0.1-${DRONE_BUILD_NUMBER}_armhf.deb
+      deb_systemd: build/package/systemd/cold-brew.service
+      command_arguments: build/out/linux/arm/cold-brew=/usr/local/bin/
+
+  - name: upload to gcs
+    image: plugins/gcs
+    environment:
+      GOOGLE_CREDENTIALS:
+        from_secret: google_auth_key
+    settings:
+      source: build/out/cold-brew_0.0.1-${DRONE_BUILD_NUMBER}_armhf.deb
+      target: open-keyless-build-storage/snapshots/cold-brew_0.0.1-${DRONE_BUILD_NUMBER}_armhf.deb
+      acl:
+        - allUsers:READER
+      cache_control: public,max-age=3600

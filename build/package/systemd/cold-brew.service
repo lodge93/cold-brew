@@ -1,0 +1,13 @@
+[Unit]
+Description=Cold Brew
+After=network.target
+
+[Service]
+Type=simple
+User=root
+WorkingDirectory=/root
+ExecStart=/usr/local/bin/cold-brew
+Restart=on-failure
+
+[Install]
+WantedBy=multi-user.target
