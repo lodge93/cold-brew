@@ -21,20 +21,6 @@ npm install
 npm run dev
 ```
 
-This project has preliminary support for wrapping the existing UI into an
-electron application.
-
-```bash
-# install electron globally
-npm install -g electron
-
-# start the development server
-npm run dev
-
-# launch the electron application
-electron .
-```
-
 ## Backend Development
 
 ```bash
