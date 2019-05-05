@@ -6,7 +6,8 @@
 package dripper
 
 import (
-	"log"
+  "github.com/sirupsen/logrus"
+  "log"
 	"sync"
 	"time"
 
@@ -81,22 +82,32 @@ type MotorController interface {
 // New creates a new dripper instance and initializes the motor HAT driver.
 func New(config Settings) (*Dripper, error) {
 	r := raspi.NewAdaptor()
+  driver := i2c.NewAdafruitMotorHatDriver(r)
+
+  // This is a bit janky. The gobot driver for this hat attempts to initialize both the motor hat and servo hat. We only
+  // are using the motor hat. This sets the server hat address to the same address as the motor hat such that we can
+  // initialize the driver without needing to update the driver code or have a servo connected.
+  err := driver.SetServoHatAddress(0x60)
+  if err != nil {
+    logrus.WithFields(logrus.Fields{
+      "error": err,
+    }).Error("could not start pump")
+    return nil, err
+  }
 
 	d := Dripper{
 		motorNum:    2,
-		pump:        i2c.NewAdafruitMotorHatDriver(r),
+		pump:        driver,
 		state:       OFF,
 		stopDripper: make(chan bool),
 		Settings:    config,
 	}
 
-	// TODO: The start method attempts to initialize both the servo and motor
-	// drivers on the HAT. This is problematic because this package only uses
-	// the motor interface. In order to account for this, edits have been made
-	// to the vendored dependency, but this should really be a pull request:
-	// https://github.com/hybridgroup/gobot/blob/master/drivers/i2c/adafruit_driver.go#L201
-	err := d.pump.Start()
+	err = d.pump.Start()
 	if err != nil {
+	  logrus.WithFields(logrus.Fields{
+	    "error": err,
+    }).Error("could not start pump")
 		return &d, err
 	}
 

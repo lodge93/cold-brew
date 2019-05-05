@@ -6,7 +6,7 @@ After=network.target
 Type=simple
 User=root
 WorkingDirectory=/root
-ExecStart=/usr/local/bin/cold-brew
+ExecStart=/usr/local/bin/cold-brew-server
 Restart=on-failure
 
 [Install]

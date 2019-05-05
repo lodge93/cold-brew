@@ -17,51 +17,20 @@ that others can build their own electronic cold brew towers.
 # install dependencies
 npm install
 
-# add your raspberry pi to /etc/hosts (this can also be changed in the webpack config)
-sudo bash -c "echo '<raspberry pi IP address> cold-brew.dev' >> /etc/hosts"
-
 # serve with hot reload at localhost:3000
 npm run dev
-```
-
-This project has preliminary support for wrapping the existing UI into an
-electron application.
-
-```bash
-# install electron globally
-npm install -g electron
-
-# start the development server
-npm run dev
-
-# launch the electron application
-electron .
 ```
 
 ## Backend Development
 
 ```bash
 # run server
-go run main.go
+make run
 ```
 
 The mocks for unit testing were generated using 
 [mock](https://github.com/golang/mock):
 ```bash
 # generate mocks
-mockgen -destination dripper/mock_dripper/mock_dripper.go github.com/lodge93/cold-brew/dripper MotorController
-```
-
-
-## Deploy Development Build
-
-```bash
-# deploy using cold-brew.dev in /etc/hosts
-./deploy/development.sh
-
-# deploy skipping the frontend assets
-./deploy/development.sh -s
-
-# deploy setting custom remote host
-./deploy/development.sh -h <raspberry pi IP address>
+make mocks
 ```

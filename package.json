@@ -16,7 +16,6 @@
     "vue-router": "^3.0.6",
     "vuetify": "^1.5.14"
   },
-  "main": "assets/build/elect.js",
   "devDependencies": {
     "autoprefixer": "^7.1.2",
     "babel-core": "^6.26.3",
@@ -31,7 +30,6 @@
     "chalk": "^2.4.2",
     "copy-webpack-plugin": "^4.6.0",
     "css-loader": "^0.28.0",
-    "electron": "^2.0.1",
     "eslint": "^3.19.0",
     "eslint-config-standard": "^10.2.1",
     "eslint-friendly-formatter": "^3.0.0",
