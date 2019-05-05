@@ -18,6 +18,9 @@ test-full:
 clean:
 	rm -rf build/out
 
+run:
+	go run cmd/cold-brew-server/main.go
+
 build: clean
 	GOOS=linux GOARCH=arm GOARM=7 CGO_ENABLED=0 go build -o build/out/linux/arm/cold-brew-server -a -installsuffix cgo github.com/lodge93/cold-brew/cmd/cold-brew-server
 
