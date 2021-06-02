@@ -6,8 +6,8 @@ package server
 import (
 	"net/http"
 
+	"github.com/betterengineering/cold-brew/api"
 	"github.com/gin-gonic/gin"
-	"github.com/lodge93/cold-brew/api"
 )
 
 // GetDripper returns the current state of the cold brew dripper.

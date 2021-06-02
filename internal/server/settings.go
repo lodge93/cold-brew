@@ -6,8 +6,8 @@ package server
 import (
 	"net/http"
 
+	"github.com/betterengineering/cold-brew/pkg/dripper"
 	"github.com/gin-gonic/gin"
-	"github.com/lodge93/cold-brew/pkg/dripper"
 )
 
 const (

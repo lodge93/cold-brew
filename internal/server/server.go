@@ -8,9 +8,8 @@ package server
 import (
 	"log"
 
-	"github.com/nanobox-io/golang-scribble"
-
-	"github.com/lodge93/cold-brew/pkg/dripper"
+	"github.com/betterengineering/cold-brew/pkg/dripper"
+	scribble "github.com/nanobox-io/golang-scribble"
 )
 
 // Server is a base object which provide HTTP requests access to the dripper.

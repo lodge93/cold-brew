@@ -8,7 +8,7 @@ import (
 	"reflect"
 	"testing"
 
-	"github.com/lodge93/cold-brew/pkg/dripper"
+	"github.com/betterengineering/cold-brew/pkg/dripper"
 )
 
 func TestWriteDripperSettingsInDB(t *testing.T) {

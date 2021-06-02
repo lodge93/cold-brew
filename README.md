@@ -1,7 +1,7 @@
 # cold-brew
-[![Build Status](https://cloud.drone.io/api/badges/lodge93/cold-brew/status.svg)](https://cloud.drone.io/lodge93/cold-brew)
-[![Go Report Card](https://goreportcard.com/badge/github.com/lodge93/cold-brew)](https://goreportcard.com/report/github.com/lodge93/cold-brew)
-[![GoDoc](https://godoc.org/github.com/lodge93/cold-brew?status.svg)](https://godoc.org/github.com/lodge93/cold-brew)
+[![Build Status](https://cloud.drone.io/api/badges/betterengineering/cold-brew/status.svg)](https://cloud.drone.io/betterengineering/cold-brew)
+[![Go Report Card](https://goreportcard.com/badge/github.com/betterengineering/cold-brew)](https://goreportcard.com/report/github.com/betterengineering/cold-brew)
+[![GoDoc](https://godoc.org/github.com/betterengineering/cold-brew?status.svg)](https://godoc.org/github.com/betterengineering/cold-brew)
 
 Cold Brew is a project to control a kyoto cold brew tower via software.
 

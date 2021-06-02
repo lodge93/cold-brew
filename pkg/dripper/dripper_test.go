@@ -6,8 +6,8 @@ package dripper
 import (
 	"testing"
 
+	"github.com/betterengineering/cold-brew/pkg/dripper/mock_dripper"
 	"github.com/golang/mock/gomock"
-	"github.com/lodge93/cold-brew/pkg/dripper/mock_dripper"
 )
 
 type testDripper struct {

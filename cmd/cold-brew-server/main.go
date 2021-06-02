@@ -5,9 +5,9 @@
 package main
 
 import (
+	"github.com/betterengineering/cold-brew/internal/server"
 	"github.com/gin-gonic/contrib/static"
 	"github.com/gin-gonic/gin"
-	"github.com/lodge93/cold-brew/internal/server"
 )
 
 func main() {
